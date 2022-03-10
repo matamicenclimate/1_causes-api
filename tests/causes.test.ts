@@ -39,7 +39,6 @@ describe('causes', () => {
         expect(response.body.title).to.eq(body.title)
         expect(response.body.description).to.eq(body.description)
         expect(response.body.imageUrl).to.eq(body.imageUrl)
-        expect(Boolean(response.body.date)).to.be.true
       }).then(done).catch(done)
 
 	})
