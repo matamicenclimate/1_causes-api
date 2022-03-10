@@ -36,10 +36,10 @@ describe('causes', () => {
       .send(body)
       .then(response => {
         expect(response.statusCode).to.eq(SUCCESS)
-        expect(response.body.value.title).to.eq(body.title)
-        expect(response.body.value.description).to.eq(body.description)
-        expect(response.body.value.imageUrl).to.eq(body.imageUrl)
-        expect(Boolean(response.body.value.date)).to.be.true
+        expect(response.body.title).to.eq(body.title)
+        expect(response.body.description).to.eq(body.description)
+        expect(response.body.imageUrl).to.eq(body.imageUrl)
+        expect(Boolean(response.body.date)).to.be.true
       }).then(done).catch(done)
 
 	})

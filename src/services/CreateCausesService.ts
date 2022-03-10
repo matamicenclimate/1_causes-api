@@ -1,13 +1,13 @@
 import { Service } from 'typedi'
-import { CausesRequestData } from '../interfaces'
+import { Adapters, CausesRequestData } from '../interfaces'
 
 @Service()
 export default class CreateCausesService {
-  async execute(adapters, data: CausesRequestData) {
+  async execute(adapters: Adapters, data: CausesRequestData) {
 		const { logger, repository } = adapters
 		data.date = new Date().toISOString()
 		logger.info('Create causes service', { CausesRequestData: data })
-
-		return await repository.createCause(data)
+		const result = await repository.create(data)
+		return result.get()
   }
 }
