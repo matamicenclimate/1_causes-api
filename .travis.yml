@@ -5,7 +5,7 @@ language: node_js
 node_js:
 - lts/*
 notifications:
-  slack: dekalabs:"${TRAVIS_TOKEN}"
+  slack: dekalabs:"$TRAVIS_TOKEN"
   template:
     - "*Project:* %{repository_name}"
     - "*Build:* <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch}"
