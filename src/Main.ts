@@ -5,6 +5,8 @@ import { useKoaServer } from 'routing-controllers'
 import { handleErrors } from './middlewares/handleErrors'
 import config from './config/default'
 import { cors } from './middlewares/cors'
+import Connection from './services/Connection'
+import Container from 'typedi'
 import { ui } from 'swagger2-koa'
 import * as swagger from 'swagger2'
 import CustomLogger from './infrastructure/CustomLogger'
@@ -26,6 +28,8 @@ export default class Main {
   
   static setup() {
     // const swaggerDocument: any = swagger.loadDocumentSync('./src/public/api.yaml');
+    const connectionService = Container.get(Connection)
+    const connection = connectionService.connect(`${process.env.NODE_ENV}-${process.env.SQLITE_DATABASE}`)
     const app = new Application()
     app.use(handleErrors)
     app.use(cors)
@@ -36,6 +40,6 @@ export default class Main {
       defaultErrorHandler: false,
       controllers: [`${__dirname}/controllers/*.ts`],
     })
-    return { app }
+    return { app, connection }
   }
 }

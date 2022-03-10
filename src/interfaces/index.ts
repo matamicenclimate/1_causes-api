@@ -3,4 +3,5 @@ export interface CausesRequestData {
 	description: string
 	wallet: string
   imageUrl: string
+	date?: string
 }

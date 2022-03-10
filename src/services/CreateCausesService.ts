@@ -4,15 +4,10 @@ import { CausesRequestData } from '../interfaces'
 @Service()
 export default class CreateCausesService {
   async execute(adapters, data: CausesRequestData) {
-		const { logger } = adapters
+		const { logger, repository } = adapters
+		data.date = new Date().toISOString()
 		logger.info('Create causes service', { CausesRequestData: data })
-		const {
-			title,
-			description,
-			wallet,
-      imageUrl,
-		} = data
-		
-		return data
+
+		return await repository.createCause(data)
   }
 }
