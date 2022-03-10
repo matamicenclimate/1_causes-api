@@ -1,0 +1,22 @@
+# Node modules
+/node_modules/
+
+# Output artifacts
+/dist/
+
+# Database stubs
+/*.db
+
+# Logging artifacts
+/*.log
+
+# Env File
+.env
+
+# Editors
+
+.vscode
+
+# Other
+
+.DS_Store
