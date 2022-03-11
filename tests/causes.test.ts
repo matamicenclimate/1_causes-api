@@ -1,23 +1,21 @@
 process.env.NODE_ENV = 'testing'
 process.env.RESTAPI_PORT = '4000'
-import fs from 'fs'
 import { loadEnvVars } from '../src/infrastructure/environment'
 loadEnvVars()
 
 import request from 'supertest'
 import { expect } from 'chai'
-import server from './testSupport/server'
-import Connection from '../src/services/Connection'
-import Container from 'typedi'
+import { server, db } from './testSupport/server'
 import Cause from '../src/domain/model/Cause'
 
 const SUCCESS = 200
 
 describe('causes', () => {
   beforeEach(async ()=> {
-    const connectionService = Container.get(Connection)
-    const connection = await connectionService
-      .connect(`${process.env.NODE_ENV}-${process.env.SQLITE_DATABASE}`)
+    await db
+  })
+  afterEach(async ()=> {
+    const connection = await db
     connection.createQueryBuilder()
     .delete()
     .from(Cause)
@@ -31,7 +29,7 @@ describe('causes', () => {
   }
 
 	it('Can be created', (done) => {
-		const response = request(server)
+		request(server)
 			.post(`/api/${process.env.RESTAPI_VERSION}/causes`)
       .send(body)
       .then(response => {
@@ -41,5 +39,21 @@ describe('causes', () => {
         expect(response.body.imageUrl).to.eq(body.imageUrl)
       }).then(done).catch(done)
 
+	})
+  it('Can be list', (done) => {
+    request(server)
+			.post(`/api/${process.env.RESTAPI_VERSION}/causes`)
+      .send(body)
+      .then((result) => {
+        expect(result.statusCode).to.eq(SUCCESS)
+        request(server)
+          .get(`/api/${process.env.RESTAPI_VERSION}/causes`)
+          .then(response => {
+            expect(response.statusCode).to.eq(SUCCESS)
+            expect(response.body[0].title).to.eq(body.title)
+            expect(response.body[0].description).to.eq(body.description)
+            expect(response.body[0].imageUrl).to.eq(body.imageUrl)
+          }).then(done).catch(done)
+      })
 	})
 })

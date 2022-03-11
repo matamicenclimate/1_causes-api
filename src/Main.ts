@@ -14,9 +14,9 @@ import CustomLogger from './infrastructure/CustomLogger'
 @Entry
 export default class Main {
   static async main(args: string[]) {
-    const { app } = await this.setup()
+    const { app, connection } = await this.setup()
     app.listen(this.port, this.done)
-    return app
+    return { app, connection }
   }
 
   static readonly port = config.port

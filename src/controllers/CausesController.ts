@@ -1,17 +1,20 @@
-import { Post, Body, JsonController } from 'routing-controllers'
+import { Post, Body, Get, JsonController } from 'routing-controllers'
 import { Inject, Service } from 'typedi'
 import CustomLogger from '../infrastructure/CustomLogger'
 import CausesRepository from '../infrastructure/repositories/CausesRepository'
 import CausesRepositoryInterface from '../infrastructure/repositories/CausesRepositoryInterface'
-import CausesService from '../services/CreateCausesService'
-import { CausesRequestData } from '../interfaces'
+import CreateCausesService from '../services/CreateCausesService'
+import FindCausesService from '../services/FindCausesService'
+import { Adapters, CausesRequestData } from '../interfaces'
 import { getCustomRepository } from 'typeorm'
 
 @Service()
 @JsonController('/api')
 export default class CausesController {
   @Inject()
-  private readonly service!: CausesService
+  private readonly createService!: CreateCausesService
+  @Inject()
+  private readonly findService!: FindCausesService
   private readonly repository: CausesRepositoryInterface
   @Inject()
   private readonly logger!: CustomLogger
@@ -21,17 +24,22 @@ export default class CausesController {
   }
 
 	@Post('/v1/causes')
-  async invoke(
+  async create(
     @Body() cause: CausesRequestData,
   ) {
     if (typeof cause === 'string') cause = JSON.parse(cause)
-    const adapters: {
-      logger: CustomLogger
-      repository: CausesRepositoryInterface
-    } = {
+    return await this.createService.execute(this.getAdapters(), cause)
+  }
+
+  @Get('/v1/causes')
+  async find() {
+    return this.findService.execute(this.getAdapters())
+  }
+
+  getAdapters(): Adapters {
+    return {
       logger: this.logger,
       repository: this.repository
     }
-    return await this.service.execute(adapters, cause)
   }
 }

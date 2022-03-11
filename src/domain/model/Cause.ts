@@ -12,6 +12,9 @@ export default class Cause {
   description: string
 
   @Column()
+  wallet: string
+
+  @Column()
   imageUrl: string
 
   @CreateDateColumn()

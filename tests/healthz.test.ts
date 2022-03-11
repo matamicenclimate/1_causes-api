@@ -6,7 +6,7 @@ loadEnvVars()
 import request from 'supertest'
 import { expect } from 'chai'
 import sinon from 'sinon'
-import server from './testSupport/server'
+import { server } from './testSupport/server'
 import HealthzService from '../src/services/HealthzService'
 import Container from 'typedi'
 
