@@ -11,4 +11,26 @@ package HealthzService {
 }
 healthz --> HealthzControllerUC
 HealthzControllerUC --> HealthzServiceUC
+
+actor Create as create
+package CausesController {
+  usecase CreateCausesControllerUC as "create Causes method
+  Use 'CreateCausesService execute' method"
+}
+package CreateCausesService {
+  usecase CreateCausesServiceUC as "create causes"
+}
+create --> CreateCausesControllerUC
+CreateCausesControllerUC --> CreateCausesServiceUC
+
+actor Find as find
+package CausesController {
+  usecase FindCausesControllerUC as "find Causes method
+  Use 'FindCausesService execute' method"
+}
+package FindCausesService {
+  usecase FindCausesServiceUC as "find causes"
+}
+find --> FindCausesControllerUC
+FindCausesControllerUC --> FindCausesServiceUC
 @enduml
