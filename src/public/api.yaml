@@ -1,0 +1,113 @@
+---
+info:
+  title: Causes Climate Microservice
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  "/api/v1/causes":
+    post:
+      operationId: CausesController.create
+      description: |
+        This service should create causes.
+      requestBody:
+        description: |
+          causes.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cause"
+      responses:
+        200:
+          description: |
+            Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CauseResponse"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+      summary: Create
+      tags:
+      - Causes
+    get:
+      operationId: CausesController.find
+      description: |
+        This service will receive all causes stored.
+      responses:
+        200:
+          description: |
+            Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CauseResponse"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+      summary: Create
+      tags:
+      - Causes
+components:
+  schemas:
+    Cause:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        wallet:
+          type: string
+        imageUrl:
+          type: string
+    CauseResponse:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        wallet:
+          type: string
+        imageUrl:
+          type: string
+        id:
+          type: string
+        createdAt:
+          description: Creation at date, in UTC ([RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)) | Example; 2019-01-25T11:12:00.000Z
+          type: string
+          format: date-time
+        updatedAt:
+          description: UpdatedAt date, in UTC ([RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)) | Example; 2019-01-25T11:12:00.000Z
+          type: string
+          format: date-time
+    ApiError:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        code:
+          type: number
+        stack:
+          type: string

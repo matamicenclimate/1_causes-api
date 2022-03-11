@@ -22,20 +22,20 @@ export default class CausesController {
   constructor() {
     this.repository = getCustomRepository(CausesRepository)
   }
-
+  
 	@Post('/v1/causes')
   async create(
     @Body() cause: CausesRequestData,
-  ) {
+    ) {
     if (typeof cause === 'string') cause = JSON.parse(cause)
     return await this.createService.execute(this.getAdapters(), cause)
   }
-
+  
   @Get('/v1/causes')
   async find() {
     return this.findService.execute(this.getAdapters())
   }
-
+  
   getAdapters(): Adapters {
     return {
       logger: this.logger,
