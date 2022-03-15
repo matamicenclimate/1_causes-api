@@ -1,10 +1,11 @@
-import { Post, Body, Get, JsonController } from 'routing-controllers'
+import { Post, Body, Get, JsonController, Param } from 'routing-controllers'
 import { Inject, Service } from 'typedi'
 import CustomLogger from '../infrastructure/CustomLogger'
 import CausesRepository from '../infrastructure/repositories/CausesRepository'
 import CausesRepositoryInterface from '../infrastructure/repositories/CausesRepositoryInterface'
 import CreateCausesService from '../services/CreateCausesService'
 import FindCausesService from '../services/FindCausesService'
+import FindOneCausesService from '../services/FindOneCausesService'
 import { Adapters, CausesRequestData } from '../interfaces'
 import { getCustomRepository } from 'typeorm'
 
@@ -15,6 +16,8 @@ export default class CausesController {
   private readonly createService!: CreateCausesService
   @Inject()
   private readonly findService!: FindCausesService
+  @Inject()
+  private readonly findOneService!: FindOneCausesService
   private readonly repository: CausesRepositoryInterface
   @Inject()
   private readonly logger!: CustomLogger
@@ -34,6 +37,11 @@ export default class CausesController {
   @Get('/v1/causes')
   async find() {
     return this.findService.execute(this.getAdapters())
+  }
+
+  @Get('/v1/causes/:wallet')
+  async findOne(@Param('wallet') wallet: string) {
+    return this.findOneService.execute(this.getAdapters(), wallet)
   }
   
   getAdapters(): Adapters {

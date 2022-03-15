@@ -40,7 +40,7 @@ describe('causes', () => {
       }).then(done).catch(done)
 
 	})
-  it('Can be list', (done) => {
+  it('Can be listed', (done) => {
     request(server)
 			.post(`/api/${process.env.RESTAPI_VERSION}/causes`)
       .send(body)
@@ -53,6 +53,23 @@ describe('causes', () => {
             expect(response.body[0].title).to.eq(body.title)
             expect(response.body[0].description).to.eq(body.description)
             expect(response.body[0].imageUrl).to.eq(body.imageUrl)
+          }).then(done).catch(done)
+      })
+	})
+  it('Find One', (done) => {
+    const wallet = 'CAUSE-WALLET'
+    request(server)
+			.post(`/api/${process.env.RESTAPI_VERSION}/causes`)
+      .send(body)
+      .then((result) => {
+        expect(result.statusCode).to.eq(SUCCESS)
+        request(server)
+          .get(`/api/${process.env.RESTAPI_VERSION}/causes/${wallet}`)
+          .then(response => {
+            expect(response.statusCode).to.eq(SUCCESS)
+            expect(response.body.title).to.eq(body.title)
+            expect(response.body.description).to.eq(body.description)
+            expect(response.body.imageUrl).to.eq(body.imageUrl)
           }).then(done).catch(done)
       })
 	})

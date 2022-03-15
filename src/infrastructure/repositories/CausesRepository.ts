@@ -24,4 +24,9 @@ export default class TypeORMCausesRepository extends Repository<Cause> implement
     }
     return none()
   }
+
+  async findOneCause(wallet): Future<Cause> {
+    const causes = await this.findOne({ wallet })
+    return some(causes)
+  }
 }
