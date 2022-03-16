@@ -7,6 +7,6 @@ export default class FindOneCausesService {
 		const { logger, repository } = adapters
 		logger.info('Find one causes service')
 		const result = await repository.findOneCause(wallet)
-		return result.get()
+		return result
   }
 }

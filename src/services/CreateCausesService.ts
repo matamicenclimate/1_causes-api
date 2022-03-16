@@ -9,7 +9,7 @@ export default class CreateCausesService {
 		const cause = this._createCause(data)
 		logger.info('Create causes service', { CausesRequestData: data })
 		const result = await repository.createCause(cause)
-		return result.get()
+		return result
   }
 
 	_createCause (data) {

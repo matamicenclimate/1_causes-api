@@ -11,66 +11,74 @@ import Cause from '../src/domain/model/Cause'
 const SUCCESS = 200
 
 describe('causes', () => {
-  beforeEach(async ()=> {
+  beforeEach(async () => {
     await db
   })
-  afterEach(async ()=> {
+  afterEach(async () => {
     const connection = await db
-    connection.createQueryBuilder()
-    .delete()
-    .from(Cause)
-    .execute();
+    connection.createQueryBuilder().delete().from(Cause).execute()
   })
   const body = {
     title: 'Title - Upload File',
     description: 'First file description',
     wallet: 'CAUSE-WALLET',
-    imageUrl: 'https://educowebmedia.blob.core.windows.net/educowebmedia/educospain/media/images/blog/ong-y-ods.jpg'
+    imageUrl:
+      'https://educowebmedia.blob.core.windows.net/educowebmedia/educospain/media/images/blog/ong-y-ods.jpg',
+  }
+  const postEntity = (b = body) =>
+    request(server).post(`/api/${process.env.RESTAPI_VERSION}/causes`).send(b)
+  const body_update = {
+    title: 'Title - Upload File - updated',
+    description: 'First file description - updated',
+    wallet: 'CAUSE-WALLET',
+    newWallet: 'CAUSE-WALLET - updated',
+    imageUrl:
+      'https://www.guiadisc.com/wp-content/uploads/constitucion-legal-ong-peru.jpg',
   }
 
-	it('Can be created', (done) => {
-		request(server)
-			.post(`/api/${process.env.RESTAPI_VERSION}/causes`)
-      .send(body)
-      .then(response => {
-        expect(response.statusCode).to.eq(SUCCESS)
-        expect(response.body.title).to.eq(body.title)
-        expect(response.body.description).to.eq(body.description)
-        expect(response.body.imageUrl).to.eq(body.imageUrl)
-      }).then(done).catch(done)
-
-	})
-  it('Can be listed', (done) => {
-    request(server)
-			.post(`/api/${process.env.RESTAPI_VERSION}/causes`)
-      .send(body)
-      .then((result) => {
-        expect(result.statusCode).to.eq(SUCCESS)
-        request(server)
-          .get(`/api/${process.env.RESTAPI_VERSION}/causes`)
-          .then(response => {
-            expect(response.statusCode).to.eq(SUCCESS)
-            expect(response.body[0].title).to.eq(body.title)
-            expect(response.body[0].description).to.eq(body.description)
-            expect(response.body[0].imageUrl).to.eq(body.imageUrl)
-          }).then(done).catch(done)
-      })
-	})
-  it('Find One', (done) => {
+  it('Can be created', async () => {
+    const response = await postEntity(body)
+    expect(response.statusCode).to.eq(SUCCESS)
+    expect(response.body.title).to.eq(body.title)
+    expect(response.body.description).to.eq(body.description)
+    expect(response.body.imageUrl).to.eq(body.imageUrl)
+  })
+  it('Can be listed', async () => {
+    const result = await postEntity()
+    expect(result.statusCode).to.eq(SUCCESS)
+    const response = await request(server).get(
+      `/api/${process.env.RESTAPI_VERSION}/causes`
+    )
+    expect(response.statusCode).to.eq(SUCCESS)
+    expect(response.body[0].title).to.eq(body.title)
+    expect(response.body[0].description).to.eq(body.description)
+    expect(response.body[0].imageUrl).to.eq(body.imageUrl)
+  })
+  it('Find One', async () => {
     const wallet = 'CAUSE-WALLET'
-    request(server)
-			.post(`/api/${process.env.RESTAPI_VERSION}/causes`)
-      .send(body)
-      .then((result) => {
-        expect(result.statusCode).to.eq(SUCCESS)
-        request(server)
-          .get(`/api/${process.env.RESTAPI_VERSION}/causes/${wallet}`)
-          .then(response => {
-            expect(response.statusCode).to.eq(SUCCESS)
-            expect(response.body.title).to.eq(body.title)
-            expect(response.body.description).to.eq(body.description)
-            expect(response.body.imageUrl).to.eq(body.imageUrl)
-          }).then(done).catch(done)
-      })
-	})
+    const result = await postEntity(body)
+    expect(result.statusCode).to.eq(SUCCESS)
+    const response = await request(server).get(
+      `/api/${process.env.RESTAPI_VERSION}/causes/${wallet}`
+    )
+    expect(response.statusCode).to.eq(SUCCESS)
+    expect(response.body.title).to.eq(body.title)
+    expect(response.body.description).to.eq(body.description)
+    expect(response.body.imageUrl).to.eq(body.imageUrl)
+  })
+  it('Can be Updated', async () => {
+    const postResult = await postEntity(body)
+    expect(postResult.statusCode).to.eq(SUCCESS)
+    const putResult = await request(server)
+      .put(`/api/${process.env.RESTAPI_VERSION}/causes`)
+      .send(body_update)
+    expect(putResult.statusCode).to.eq(SUCCESS)
+    const response = await request(server).get(
+      `/api/${process.env.RESTAPI_VERSION}/causes/${body_update.newWallet}`
+    )
+    expect(response.statusCode).to.eq(SUCCESS)
+    expect(response.body.title).to.eq(body_update.title)
+    expect(response.body.description).to.eq(body_update.description)
+    expect(response.body.imageUrl).to.eq(body_update.imageUrl)
+  })
 })

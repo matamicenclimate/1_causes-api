@@ -5,15 +5,11 @@ import { loadEnvVars } from '../../src/infrastructure/environment'
 loadEnvVars()
 import ServerManager from '../../src/Server'
 
-let server: Server
-let db
-if (!server) {
-  const { app, connection } = ServerManager.setup()
-  db = connection
-  server = app.listen(process.env.RESTAPI_PORT, () => {
-    console.log('Server listening on port', process.env.RESTAPI_PORT)
-  })
-}
+const { app, connection: db } = ServerManager.setup()
+const server = app.listen(process.env.RESTAPI_PORT, () => {
+  console.log('Server listening on port', process.env.RESTAPI_PORT)
+})
+
 export { 
   server,
   db
