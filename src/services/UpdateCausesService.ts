@@ -1,6 +1,5 @@
 import { Service } from 'typedi'
-import Cause from '../domain/model/Cause';
-import { Adapters, CausesRequestData } from '../interfaces'
+import { Adapters } from '../interfaces'
 import { CauseUpdate } from '../infrastructure/repositories/CausesRepository'
 
 @Service()
