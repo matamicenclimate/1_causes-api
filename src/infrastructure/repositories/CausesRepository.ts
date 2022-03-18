@@ -32,6 +32,14 @@ export default class TypeORMCausesRepository extends Repository<Cause> implement
     return some(cause)
   }
 
+  async deleteCause(wallet: string): Future<any> {
+    const cause = await this.manager.softDelete(Cause, { wallet })
+    if (cause == null) {
+      return none()
+    }
+
+    return some(cause)
+  }
   async updateCause(data: CauseUpdate): Future<Cause> {
     const cause = await this.findOne({ wallet: data.wallet })
     if (cause == null) {

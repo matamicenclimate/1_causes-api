@@ -80,4 +80,17 @@ describe('causes', () => {
     expect(response.body.description).to.eq(body_update.description)
     expect(response.body.imageUrl).to.eq(body_update.imageUrl)
   })
+  it('Can be Deleted', async () => {
+    const postResponse = await postEntity(body)
+    expect(postResponse.statusCode).to.eq(SUCCESS)
+    const deleteResponse = await request(server).delete(
+      `/api/${process.env.RESTAPI_VERSION}/causes/${body.wallet}`
+    )
+    expect(deleteResponse.statusCode).to.eq(SUCCESS)
+    const findResponse = await request(server).get(
+      `/api/${process.env.RESTAPI_VERSION}/causes/${body.wallet}`
+    )
+    expect(findResponse.statusCode).to.eq(SUCCESS)
+    expect(findResponse.body).to.be.empty
+  })
 })

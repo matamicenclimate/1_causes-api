@@ -7,4 +7,5 @@ export default interface CausesRepositoryInterface {
   findCause(): Promise<Array<Cause>>
   findOneCause(wallet: string): Promise<option<Cause>>
   updateCause(cause: CauseUpdate): Promise<option<Cause>>
+  deleteCause(wallet: string): Promise<option<Cause>>
 }
