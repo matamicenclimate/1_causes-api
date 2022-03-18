@@ -44,8 +44,8 @@ describe('causes', () => {
     expect(response.body.imageUrl).to.eq(body.imageUrl)
   })
   it('Can be listed', async () => {
-    const result = await postEntity()
-    expect(result.statusCode).to.eq(SUCCESS)
+    const postResponse = await postEntity()
+    expect(postResponse.statusCode).to.eq(SUCCESS)
     const response = await request(server).get(
       `/api/${process.env.RESTAPI_VERSION}/causes`
     )
@@ -55,11 +55,10 @@ describe('causes', () => {
     expect(response.body[0].imageUrl).to.eq(body.imageUrl)
   })
   it('Find One', async () => {
-    const wallet = 'CAUSE-WALLET'
-    const result = await postEntity(body)
-    expect(result.statusCode).to.eq(SUCCESS)
+    const postResponse = await postEntity(body)
+    expect(postResponse.statusCode).to.eq(SUCCESS)
     const response = await request(server).get(
-      `/api/${process.env.RESTAPI_VERSION}/causes/${wallet}`
+      `/api/${process.env.RESTAPI_VERSION}/causes/${body.wallet}`
     )
     expect(response.statusCode).to.eq(SUCCESS)
     expect(response.body.title).to.eq(body.title)
@@ -67,12 +66,12 @@ describe('causes', () => {
     expect(response.body.imageUrl).to.eq(body.imageUrl)
   })
   it('Can be Updated', async () => {
-    const postResult = await postEntity(body)
-    expect(postResult.statusCode).to.eq(SUCCESS)
-    const putResult = await request(server)
+    const postResponse = await postEntity(body)
+    expect(postResponse.statusCode).to.eq(SUCCESS)
+    const putResponse = await request(server)
       .put(`/api/${process.env.RESTAPI_VERSION}/causes`)
       .send(body_update)
-    expect(putResult.statusCode).to.eq(SUCCESS)
+    expect(putResponse.statusCode).to.eq(SUCCESS)
     const response = await request(server).get(
       `/api/${process.env.RESTAPI_VERSION}/causes/${body_update.newWallet}`
     )
