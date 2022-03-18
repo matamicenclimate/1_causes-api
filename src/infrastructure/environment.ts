@@ -23,11 +23,11 @@ const loadEnvVars = () :void => {
   checkEnvVars()
 }
 
-const assertVariable = (variable:string, name:string) => {
-  if (variable === undefined) {
+const assertVariable = (variable: string | undefined, name: string) => {
+  if (variable == null) {
     throw new Error(`Variable ${name} is undefined!`)
   }
-  if (variable === "") {
+  if (variable.trim() === "") {
     throw new Error(`Variable ${name} is empty!`)
   }
 }
