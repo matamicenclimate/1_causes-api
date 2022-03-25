@@ -3,10 +3,10 @@ import { Adapters } from '../interfaces'
 
 @Service()
 export default class DeleteCausesService {
-  async execute(adapters: Adapters, wallet: string) {
+	async execute(adapters: Adapters, id: string) {
 		const { logger, repository } = adapters
-		const result = await repository.deleteCause(wallet)
-		logger.info('Deleting cause')
+		logger.info('Deleting cause', { id })
+		const result = await repository.deleteCause(id)
 		return result
-  }
+	}
 }

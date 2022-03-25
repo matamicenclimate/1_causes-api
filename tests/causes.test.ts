@@ -31,7 +31,6 @@ describe('causes', () => {
     title: 'Title - Upload File - updated',
     description: 'First file description - updated',
     wallet: 'CAUSE-WALLET',
-    newWallet: 'CAUSE-WALLET - updated',
     imageUrl:
       'https://www.guiadisc.com/wp-content/uploads/constitucion-legal-ong-peru.jpg',
   }
@@ -58,7 +57,7 @@ describe('causes', () => {
     const postResponse = await postEntity(body)
     expect(postResponse.statusCode).to.eq(SUCCESS)
     const response = await request(server).get(
-      `/api/${process.env.RESTAPI_VERSION}/causes/${body.wallet}`
+      `/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`
     )
     expect(response.statusCode).to.eq(SUCCESS)
     expect(response.body.title).to.eq(body.title)
@@ -69,11 +68,12 @@ describe('causes', () => {
     const postResponse = await postEntity(body)
     expect(postResponse.statusCode).to.eq(SUCCESS)
     const putResponse = await request(server)
-      .put(`/api/${process.env.RESTAPI_VERSION}/causes`)
+      .put(`/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`)
       .send(body_update)
     expect(putResponse.statusCode).to.eq(SUCCESS)
+    expect(putResponse.body.affected).to.eq(1)
     const response = await request(server).get(
-      `/api/${process.env.RESTAPI_VERSION}/causes/${body_update.newWallet}`
+      `/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`
     )
     expect(response.statusCode).to.eq(SUCCESS)
     expect(response.body.title).to.eq(body_update.title)
@@ -84,11 +84,11 @@ describe('causes', () => {
     const postResponse = await postEntity(body)
     expect(postResponse.statusCode).to.eq(SUCCESS)
     const deleteResponse = await request(server).delete(
-      `/api/${process.env.RESTAPI_VERSION}/causes/${body.wallet}`
+      `/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`
     )
     expect(deleteResponse.statusCode).to.eq(SUCCESS)
     const findResponse = await request(server).get(
-      `/api/${process.env.RESTAPI_VERSION}/causes/${body.wallet}`
+      `/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`
     )
     expect(findResponse.statusCode).to.eq(SUCCESS)
     expect(findResponse.body).to.be.empty

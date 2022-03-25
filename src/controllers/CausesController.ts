@@ -9,9 +9,7 @@ import {
 } from 'routing-controllers'
 import { Inject, Service } from 'typedi'
 import CustomLogger from '../infrastructure/CustomLogger'
-import CausesRepository, {
-  CauseUpdate,
-} from '../infrastructure/repositories/CausesRepository'
+import CausesRepository from '../infrastructure/repositories/CausesRepository'
 import CausesRepositoryInterface from '../infrastructure/repositories/CausesRepositoryInterface'
 import CreateCausesService from '../services/CreateCausesService'
 import FindCausesService from '../services/FindCausesService'
@@ -63,12 +61,12 @@ export default class CausesController {
     return this.findService.execute(this.getAdapters())
   }
 
-  @Get('/v1/causes/:wallet')
-  async findOne(@Param('wallet') wallet: string) {
+  @Get('/v1/causes/:id')
+  async findOne(@Param('id') id: string) {
     try {
       const result = await this.findOneService.execute(
         this.getAdapters(),
-        wallet
+        id
       )
       if (result.isDefined()) {
         return result.value
@@ -82,11 +80,12 @@ export default class CausesController {
     }
   }
 
-  @Put('/v1/causes')
-  async update(@Body() cause: CauseUpdate) {
+  @Put('/v1/causes/:id')
+  async update(@Body() cause: any, @Param('id') id: string) {
     try {
       if (typeof cause === 'string') cause = JSON.parse(cause)
-      const result = await this.updateService.execute(this.getAdapters(), cause)
+      const result = await this.updateService.execute(this.getAdapters(), cause, id)
+
       if (result.isDefined()) {
         return result.value
       }
@@ -99,12 +98,12 @@ export default class CausesController {
     }
   }
 
-  @Delete('/v1/causes/:wallet')
-  async delete(@Param('wallet') wallet: string) {
+  @Delete('/v1/causes/:id')
+  async delete(@Param('id') id: string) {
     try {
       const result = await this.deleteService.execute(
         this.getAdapters(),
-        wallet
+        id
       )
       if (result.isDefined()) {
         return result.value

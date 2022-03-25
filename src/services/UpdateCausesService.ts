@@ -1,13 +1,13 @@
 import { Service } from 'typedi'
+import Cause from '../domain/model/Cause'
 import { Adapters } from '../interfaces'
-import { CauseUpdate } from '../infrastructure/repositories/CausesRepository'
 
 @Service()
 export default class UpdateCausesService {
-  async execute(adapters: Adapters, data: CauseUpdate) {
+	async execute(adapters: Adapters, data: Cause, id: string) {
 		const { logger, repository } = adapters
-		const result = await repository.updateCause(data)
-		logger.info('Updating cause', {CauseUpdate: data})
+		logger.info('Updating cause', { cause: data, id })
+		const result = await repository.updateCause(data, id)
 		return result
-  }
+	}
 }
