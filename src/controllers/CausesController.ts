@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  UseBefore,
 } from 'routing-controllers'
 import { Inject, Service } from 'typedi'
 import CustomLogger from '../infrastructure/CustomLogger'
@@ -20,6 +21,7 @@ import DeleteOneCausesService from '../services/DeleteOneCausesService'
 import { Adapters, CausesRequestData } from '../interfaces'
 import { getCustomRepository } from 'typeorm'
 import ServiceException from '../infrastructure/errors/ServiceException'
+import { authorization } from '../middlewares/authorization'
 
 @Service()
 @JsonController('/api')
@@ -45,6 +47,7 @@ export default class CausesController {
   }
 
   @Post('/v1/causes')
+  @UseBefore(authorization)
   async create(@Body() cause: CausesRequestData) {
     try {
       if (typeof cause === 'string') cause = JSON.parse(cause)
@@ -89,6 +92,7 @@ export default class CausesController {
   }
 
   @Put('/v1/causes/:id')
+  @UseBefore(authorization)
   async update(@Body() cause: any, @Param('id') id: string) {
     try {
       if (typeof cause === 'string') cause = JSON.parse(cause)
@@ -107,6 +111,7 @@ export default class CausesController {
   }
 
   @Delete('/v1/causes/:id')
+  @UseBefore(authorization)
   async delete(@Param('id') id: string) {
     try {
       const result = await this.deleteOneService.execute(
