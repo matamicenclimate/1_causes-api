@@ -10,7 +10,7 @@ export async function authorization(
   const { token } = config
   const { authorization } = ctx.headers
   if (token !== authorization) {
-    const error = new AuthorizationException('You cannot access to server')
+    const error = new AuthorizationException('You cannot access to the server')
     ctx.body = customError(error)
     ctx.status = 401
     return

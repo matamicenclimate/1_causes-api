@@ -23,7 +23,7 @@ describe('Authorization', () => {
             .send(body)
         expect(response.statusCode).to.eq(UNAUTHORIZED_STATUS)
         expect(response.body.status).to.eq('ko')
-        expect(response.body.message).to.eq('You cannot access to server')
+        expect(response.body.message).to.eq('You cannot access to the server')
         expect(response.body.code).to.eq(UNAUTHORIZED_STATUS)
         expect(Boolean(response.body.stack)).to.be.true
     })
