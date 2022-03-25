@@ -14,7 +14,7 @@ import CausesRepositoryInterface from '../infrastructure/repositories/CausesRepo
 import CreateCausesService from '../services/CreateCausesService'
 import FindCausesService from '../services/FindCausesService'
 import FindOneCausesService from '../services/FindOneCausesService'
-import percentageService from '../services/PercentageService'
+import ConfigCausesService from '../services/ConfigCausesService'
 import UpdateCausesService from '../services/UpdateOneCausesService'
 import DeleteOneCausesService from '../services/DeleteOneCausesService'
 import { Adapters, CausesRequestData } from '../interfaces'
@@ -35,7 +35,7 @@ export default class CausesController {
   @Inject()
   private readonly deleteOneService!: DeleteOneCausesService
   @Inject()
-  private readonly percentageService!: percentageService
+  private readonly configCausesService!: ConfigCausesService
   private readonly repository: CausesRepositoryInterface
   @Inject()
   private readonly logger!: CustomLogger
@@ -66,7 +66,7 @@ export default class CausesController {
 
   @Get('/v1/causes/config')
   async findPercentage() {
-    return this.percentageService.execute(this.getAdapters())
+    return this.configCausesService.execute(this.getAdapters())
   }
 
   @Get('/v1/causes/:id')
