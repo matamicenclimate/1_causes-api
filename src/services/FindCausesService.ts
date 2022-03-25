@@ -1,5 +1,5 @@
 import { Service } from 'typedi'
-import { Adapters, CausesRequestData } from '../interfaces'
+import { Adapters } from '../interfaces'
 
 @Service()
 export default class FindCausesService {

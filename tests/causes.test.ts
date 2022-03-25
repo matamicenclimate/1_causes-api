@@ -18,6 +18,7 @@ describe('causes', () => {
     const connection = await db
     connection.createQueryBuilder().delete().from(Cause).execute()
   })
+
   const body = {
     title: 'Title - Upload File',
     description: 'First file description',
