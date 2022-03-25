@@ -33,7 +33,10 @@ describe('causes', () => {
   }
 
   const postEntity = (b = body) =>
-    request(server).post(`/api/${process.env.RESTAPI_VERSION}/causes`).send(b)
+    request(server)
+      .post(`/api/${process.env.RESTAPI_VERSION}/causes`)
+      .set({ 'Authorization': process.env.AUTH_TOKEN })
+      .send(b)
   const body_update = {
     title: 'Title - Upload File - updated',
     description: 'First file description - updated',
@@ -76,7 +79,7 @@ describe('causes', () => {
     expect(postResponse.statusCode).to.eq(SUCCESS)
     const putResponse = await request(server)
       .put(`/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`)
-      .send(body_update)
+      .send(body_update).set({ 'Authorization': process.env.AUTH_TOKEN })
     expect(putResponse.statusCode).to.eq(SUCCESS)
     expect(putResponse.body.affected).to.eq(1)
     const response = await request(server).get(
@@ -92,7 +95,7 @@ describe('causes', () => {
     expect(postResponse.statusCode).to.eq(SUCCESS)
     const deleteResponse = await request(server).delete(
       `/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`
-    )
+    ).set({ 'Authorization': process.env.AUTH_TOKEN })
     expect(deleteResponse.statusCode).to.eq(SUCCESS)
     const findResponse = await request(server).get(
       `/api/${process.env.RESTAPI_VERSION}/causes/${postResponse.body.id}`

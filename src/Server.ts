@@ -9,7 +9,7 @@ import { ui } from 'swagger2-koa'
 import * as swagger from 'swagger2'
 
 export default class Server {
-  static setup () {
+  static setup() {
     const swaggerDocument: any = swagger.loadDocumentSync('./src/public/api.yaml');
     const connectionService = Container.get(Connection)
     const connection = connectionService.connect(`${process.env.NODE_ENV}-${process.env.SQLITE_DATABASE}`)
