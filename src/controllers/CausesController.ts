@@ -64,7 +64,7 @@ export default class CausesController {
     return this.findService.execute(this.getAdapters())
   }
 
-  @Get('/v1/causes/percentages')
+  @Get('/v1/causes/config')
   async findPercentage() {
     return this.percentageService.execute(this.getAdapters())
   }

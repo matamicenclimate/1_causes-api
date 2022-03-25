@@ -102,7 +102,7 @@ describe('causes', () => {
   })
   it('Can find causes percentages', async () => {
     const response = await request(server).get(
-      `/api/${process.env.RESTAPI_VERSION}/causes/percentages`
+      `/api/${process.env.RESTAPI_VERSION}/causes/config`
     )
     expect(response.statusCode).to.eq(SUCCESS)
     expect(response.body.percentages.cause).to.eq(percentages.cause)
