@@ -14,8 +14,8 @@ import CausesRepositoryInterface from '../infrastructure/repositories/CausesRepo
 import CreateCausesService from '../services/CreateCausesService'
 import FindCausesService from '../services/FindCausesService'
 import FindOneCausesService from '../services/FindOneCausesService'
-import updateCausesService from '../services/UpdateCausesService'
-import deleteCausesService from '../services/DeleteCausesService'
+import UpdateCausesService from '../services/UpdateOneCausesService'
+import DeleteOneCausesService from '../services/DeleteOneCausesService'
 import { Adapters, CausesRequestData } from '../interfaces'
 import { getCustomRepository } from 'typeorm'
 import ServiceException from '../infrastructure/errors/ServiceException'
@@ -30,9 +30,9 @@ export default class CausesController {
   @Inject()
   private readonly findOneService!: FindOneCausesService
   @Inject()
-  private readonly updateService!: updateCausesService
+  private readonly updateOneService!: UpdateCausesService
   @Inject()
-  private readonly deleteService!: deleteCausesService
+  private readonly deleteOneService!: DeleteOneCausesService
   private readonly repository: CausesRepositoryInterface
   @Inject()
   private readonly logger!: CustomLogger
@@ -84,7 +84,7 @@ export default class CausesController {
   async update(@Body() cause: any, @Param('id') id: string) {
     try {
       if (typeof cause === 'string') cause = JSON.parse(cause)
-      const result = await this.updateService.execute(this.getAdapters(), cause, id)
+      const result = await this.updateOneService.execute(this.getAdapters(), cause, id)
 
       if (result.isDefined()) {
         return result.value
@@ -101,7 +101,7 @@ export default class CausesController {
   @Delete('/v1/causes/:id')
   async delete(@Param('id') id: string) {
     try {
-      const result = await this.deleteService.execute(
+      const result = await this.deleteOneService.execute(
         this.getAdapters(),
         id
       )

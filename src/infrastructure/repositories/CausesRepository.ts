@@ -31,7 +31,7 @@ export default class TypeORMCausesRepository
     return some(cause)
   }
 
-  async deleteCause(id: string): Future<any> {
+  async deleteOneCause(id: string): Future<any> {
     const cause = await this.manager.softDelete(Cause, { id })
     if (cause == null) {
       return none()
@@ -40,7 +40,7 @@ export default class TypeORMCausesRepository
     return some(cause)
   }
 
-  async updateCause(data: Cause, id: string): Future<UpdateResult> {
+  async updateOneCause(data: Cause, id: string): Future<UpdateResult> {
     const result: UpdateResult = await this.manager.update(Cause, id, data)
     if (result.affected) {
       return some(result)
