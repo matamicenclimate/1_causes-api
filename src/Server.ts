@@ -12,7 +12,7 @@ export default class Server {
   static setup() {
     const swaggerDocument: any = swagger.loadDocumentSync('./src/public/api.yaml');
     const connectionService = Container.get(Connection)
-    const connection = connectionService.connect(`${process.env.NODE_ENV}-${process.env.SQLITE_DATABASE}`)
+    const connection = connectionService.connect(`./databases/${process.env.NODE_ENV}-${process.env.SQLITE_DATABASE}`)
     const app = new Application()
     app.use(handleErrors)
     app.use(cors)
