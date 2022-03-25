@@ -18,6 +18,7 @@ describe('causes', () => {
     const connection = await db
     connection.createQueryBuilder().delete().from(Cause).execute()
   })
+
   const body = {
     title: 'Title - Upload File',
     description: 'First file description',
@@ -25,6 +26,12 @@ describe('causes', () => {
     imageUrl:
       'https://educowebmedia.blob.core.windows.net/educowebmedia/educospain/media/images/blog/ong-y-ods.jpg',
   }
+
+  const percentages = {
+    marketplace: process.env.MARKETPLACE_PROFIT_PERCENTAJE,
+    cause: process.env.MIN_CAUSE_PROFIT_PERCENTAJE,
+  }
+
   const postEntity = (b = body) =>
     request(server).post(`/api/${process.env.RESTAPI_VERSION}/causes`).send(b)
   const body_update = {
@@ -92,5 +99,13 @@ describe('causes', () => {
     )
     expect(findResponse.statusCode).to.eq(SUCCESS)
     expect(findResponse.body).to.be.empty
+  })
+  it('Can find causes percentages', async () => {
+    const response = await request(server).get(
+      `/api/${process.env.RESTAPI_VERSION}/causes/config`
+    )
+    expect(response.statusCode).to.eq(SUCCESS)
+    expect(response.body.percentages.cause).to.eq(percentages.cause)
+    expect(response.body.percentages.marketplace).to.eq(percentages.marketplace)
   })
 })
