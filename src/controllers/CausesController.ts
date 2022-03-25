@@ -18,6 +18,7 @@ import FindCausesService from '../services/FindCausesService'
 import FindOneCausesService from '../services/FindOneCausesService'
 import updateCausesService from '../services/UpdateCausesService'
 import deleteCausesService from '../services/DeleteCausesService'
+import percentageService from '../services/PercentageService'
 import { Adapters, CausesRequestData } from '../interfaces'
 import { getCustomRepository } from 'typeorm'
 import ServiceException from '../infrastructure/errors/ServiceException'
@@ -35,6 +36,8 @@ export default class CausesController {
   private readonly updateService!: updateCausesService
   @Inject()
   private readonly deleteService!: deleteCausesService
+  @Inject()
+  private readonly percentageService!: percentageService
   private readonly repository: CausesRepositoryInterface
   @Inject()
   private readonly logger!: CustomLogger
@@ -61,6 +64,11 @@ export default class CausesController {
   @Get('/v1/causes')
   async find() {
     return this.findService.execute(this.getAdapters())
+  }
+
+  @Get('/v1/causes/percentages')
+  async findPercentage() {
+    return this.percentageService.execute(this.getAdapters())
   }
 
   @Get('/v1/causes/:wallet')
