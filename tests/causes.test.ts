@@ -28,8 +28,8 @@ describe('causes', () => {
   }
 
   const percentages = {
-    marketplace: process.env.MARKETPLACE_PROFIT_PERCENTAJE,
-    cause: process.env.MIN_CAUSE_PROFIT_PERCENTAJE,
+    marketplace: parseInt(process.env.MARKETPLACE_PROFIT_PERCENTAJE?? ''),
+    cause: parseInt(process.env.MIN_CAUSE_PROFIT_PERCENTAJE?? ''),
   }
 
   const postEntity = (b = body) =>
